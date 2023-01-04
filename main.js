@@ -32,7 +32,7 @@ const operate = (operator, x, y) => {
 //Calculator Functions - Numbers
 
 //Calculator Display Value
-let calcDisplayValue = 0;
+let calcDisplayValue = '';
 
 //Updates Calculator Display
 const updateCalcDisplay = (updatedValue) => {
@@ -51,7 +51,7 @@ const getNumberPressed = () => {
 
      
 
-        calculateResult(button.value);
+        calculateResult(button.value, button.classList);
       });
     });
 
@@ -60,14 +60,31 @@ const getNumberPressed = () => {
 };
 
 // Cheks the button pressed and decides the correct calculation to do
-const calculateResult  = (value) => {
+const calculateResult  = (value, classList) => {
 
-    if (value == 'all-clear') {
-      updateCalcDisplay(0)
+console.log(classList.contains(`operator`));
+
+
+    if (value == "all-clear") {
+      calcDisplayValue = "";
+    } else if (classList.contains(`operator`)) {
+      calcDisplayValue += ` ${value} `;
+    } else if (value == "=") {
+      
+      
+      let splitValue = calcDisplayValue.split(' ');
+      let result = operate(splitValue[1], splitValue[0], splitValue[2]);
+
+
+      calcDisplayValue = result.toString();
+     
+
     } else {
-      updateCalcDisplay(value);
+      calcDisplayValue += value;
     }
-
+    
+ 
+    updateCalcDisplay(calcDisplayValue);
        
 };
 
