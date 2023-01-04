@@ -30,67 +30,63 @@ const operate = (operator, x, y) => {
     : 0;
 };
 
-
 //Calculator Functions - Numbers
 
 //Calculator Display Value
-let calcDisplayValue = '';
+let calcDisplayValue = "";
 
 //Updates Calculator Display
 const updateCalcDisplay = (updatedValue) => {
-    document.querySelector('.calculator-screen').value = updatedValue;
+  document.querySelector(".calculator-screen").value = updatedValue;
 };
-
 
 //Retrieve Number Pressed and Update Display Value
 const getNumberPressed = () => {
-    
-    let calcButtons = document.querySelectorAll(".calc-button");
+  let calcButtons = document.querySelectorAll(".calc-button");
 
-    calcButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        
-
-     
-
-        calculateResult(button.value, button.classList);
-      });
+  calcButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      calculateResult(button.value, button.classList);
     });
-
-
-  
+  });
 };
 
 // Cheks the button pressed and decides the correct calculation to do
-const calculateResult  = (value, classList) => {
+const calculateResult = (value, classList) => {
+  if (value == "all-clear") {
+    calcDisplayValue = "";
+  } else if (classList.contains(`operator`)) {
+    calcDisplayValue += ` ${value} `;
+  } else if (value == "=") {
+    let splitValue = calcDisplayValue.split(" ");
+    let currentOperator = "";
+    let result = 0;
+    let temp = 0;
 
-console.log(classList.contains(`operator`));
+    // Calculate the result value from left to right
+    for (let i = 0; i < splitValue.length; i++) {
+      if (i % 2 != 0) {
+        if ((currentOperator == "")) {
+          currentOperator = splitValue[i];
 
+          temp = operate(currentOperator, splitValue[i - 1], splitValue[i + 1]);
+          console.log(temp);
+        } else {
+          currentOperator = splitValue[i];
 
-    if (value == "all-clear") {
-      calcDisplayValue = "";
-    } else if (classList.contains(`operator`)) {
-      calcDisplayValue += ` ${value} `;
-    } else if (value == "=") {
-      
-      
-      let splitValue = calcDisplayValue.split(' ');
-      let result = operate(splitValue[1], splitValue[0], splitValue[2]);
-
-
-      calcDisplayValue = result.toString();
-     
-
-    } else {
-      calcDisplayValue += value;
+         temp = operate(currentOperator, temp, splitValue[i + 1]);
+        }
+      }
+      result = temp;
     }
-    
- 
-    updateCalcDisplay(calcDisplayValue);
-       
+
+
+    calcDisplayValue = result.toString();
+  } else {
+    calcDisplayValue += value;
+  }
+
+  updateCalcDisplay(calcDisplayValue);
 };
-
-
-
 
 getNumberPressed();
