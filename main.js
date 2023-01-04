@@ -1,8 +1,8 @@
 //Calculator Functions - Operators
 
 const add = (x, y) => {
-  x = parseInt(x);
-  y = parseInt(y);
+  x = parseFloat(x);
+  y = parseFloat(y);
   return x + y;
 };
 
@@ -15,7 +15,7 @@ const multiply = (x, y) => {
 };
 
 const divide = (x, y) => {
-  return x / y;
+  return y != 0 || y == undefined ? x / y : "Error";
 };
 
 const operate = (operator, x, y) => {
@@ -66,7 +66,7 @@ const calculateResult = (value, classList) => {
     // Calculate the result value from left to right
     for (let i = 0; i < splitValue.length; i++) {
       if (i % 2 != 0) {
-        if ((currentOperator == "")) {
+        if (currentOperator == "") {
           currentOperator = splitValue[i];
 
           temp = operate(currentOperator, splitValue[i - 1], splitValue[i + 1]);
@@ -74,14 +74,21 @@ const calculateResult = (value, classList) => {
         } else {
           currentOperator = splitValue[i];
 
-         temp = operate(currentOperator, temp, splitValue[i + 1]);
+          temp = operate(currentOperator, temp, splitValue[i + 1]);
         }
       }
       result = temp;
     }
 
+    if (result == NaN || result == "Error" || result == Infinity) {
+      calcDisplayValue = "Error";
+    } else {
+    result = Math.round(result * 10000) / 10000;
 
     calcDisplayValue = result.toString();
+    }
+
+
   } else {
     calcDisplayValue += value;
   }
