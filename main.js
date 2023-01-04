@@ -51,13 +51,16 @@ const getNumberPressed = () => {
   });
 };
 
-// Cheks the button pressed and decides the correct calculation to do
+// Checks the button pressed and mainupulates the display value appropriately
+// to either clear the display or do the calculation
 const calculateResult = (value, classList) => {
   if (value == "all-clear") {
     calcDisplayValue = "";
   } else if (classList.contains(`operator`)) {
     calcDisplayValue += ` ${value} `;
   } else if (value == "=") {
+
+    //Variables that are important for the calculation
     let splitValue = calcDisplayValue.split(" ");
     let currentOperator = "";
     let result = 0;
@@ -80,11 +83,11 @@ const calculateResult = (value, classList) => {
       result = temp;
     }
 
+    // Very simple error handling for if the calculation returns NaN, Infinity, or tries to divide by zero
     if (result == NaN || result == "Error" || result == Infinity) {
       calcDisplayValue = "Error";
     } else {
     result = Math.round(result * 10000) / 10000;
-
     calcDisplayValue = result.toString();
     }
 
@@ -95,5 +98,7 @@ const calculateResult = (value, classList) => {
 
   updateCalcDisplay(calcDisplayValue);
 };
+
+
 
 getNumberPressed();
