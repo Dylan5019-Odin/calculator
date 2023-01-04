@@ -1,6 +1,8 @@
 //Calculator Functions - Operators
 
 const add = (x, y) => {
+  x = parseInt(x);
+  y = parseInt(y);
   return x + y;
 };
 
